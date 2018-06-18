@@ -1,0 +1,33 @@
+http:
+  bind: :8080
+language:
+  default: EN
+handlers:
+  - type: CREATED_USER
+    path: /created-user
+    actions:
+      - type: email
+        to:
+          - name: "{{.Event.Data.DisplayedName}}"
+            email: "{{.Event.Data.Email}}"
+        from:
+          name: Lea
+          email: lea@example.com
+        ccc:
+          - name: Admin
+            email: admin@example.com
+        subject: "Welcome {{.Event.Data.DisplayedName}}"
+        body:
+          html: true
+          template: ./example/templates/register/body.html
+        pdf:
+          filename: my_registration.pdf
+          template: ./example/templates/register/pdf.html
+
+modules:
+  email:
+    smtp-host: mysmtp.myhost.com
+    smtp-port: 587
+    smtp-tls: true
+    smtp-login: mylogin
+    smtp-password: mypassword
