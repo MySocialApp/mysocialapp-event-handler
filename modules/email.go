@@ -28,7 +28,7 @@ func (e *EmailModule) GetDialer() *gomail.Dialer {
 		return e.Dialer
 	}
 	e.Dialer = gomail.NewDialer(e.SmtpHost, e.SmtpPort, e.SmtpLogin, e.SmtpPassword)
-	e.Dialer.TLSConfig = &tls.Config{InsecureSkipVerify: e.SmtpTls}
+	e.Dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	return e.Dialer
 }
 
@@ -156,7 +156,7 @@ func (e *Email) Send() error {
 		}
 	}
 	defer os.Remove(filename)
-	return e.emailModule.Dialer.DialAndSend(msg)
+	return e.emailModule.GetDialer().DialAndSend(msg)
 }
 
 type EmailFile struct {
@@ -188,7 +188,7 @@ func Html2pdf(buff *bytes.Buffer) (*bytes.Buffer, error) {
 	// Set options for this page
 	page.FooterRight.Set("[page]")
 	page.FooterFontSize.Set(10)
-	page.Zoom.Set(95.50)
+	page.Zoom.Set(1)
 
 	// Add to document
 	pdfg.AddPage(page)

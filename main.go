@@ -11,10 +11,11 @@ import (
 
 var (
 	AppConfigService = msaevents.NewAppConfigService()
+
+	configFilename = flag.String("config", "", "YAML config file")
 )
 
 func main() {
-	configFilename := flag.String("config", "", "YAML config file")
 	flag.Parse()
 	conf := loadConfig(*configFilename)
 	if conf == nil {
@@ -45,7 +46,9 @@ func main() {
 				return
 			}
 			for _, action := range actions {
-				action.Do(e, conf)
+				if err := action.Do(e, conf); err != nil {
+					log.Printf("action failed (%s): %s",handler.Path, err.Error())
+				}
 			}
 		})
 	}

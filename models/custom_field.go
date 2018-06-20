@@ -39,7 +39,7 @@ func (c *CustomFieldData) StringValue() string {
 	case reflect.Float32, reflect.Float64:
 		return strconv.Itoa(int(v.Float()))
 	default:
-		fmt.Printf("fail to found type of %+v\n", v.String())
+		//fmt.Printf("fail to found type of %+v\n", v.String())
 		return ""
 	}
 }

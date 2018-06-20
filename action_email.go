@@ -2,18 +2,12 @@ package main
 
 import (
 	"bytes"
-	"flag"
 	"github.com/MySocialApp/mysocialapp-event-handler/models"
 	"html/template"
 	"io/ioutil"
 	"log"
-)
-
-var (
-	smtpHost     = flag.String("smtp-host", "", "Smtp host")
-	smtpPort     = flag.Int("smtp-port", 587, "Smtp host")
-	smtpUser     = flag.String("smtp-user", "", "Smtp user")
-	smtpPassword = flag.String("smtp-password", "", "Smtp password")
+	"path/filepath"
+	"os"
 )
 
 type ActionEmail struct {
@@ -64,13 +58,14 @@ func (a *ActionEmail) Do(data interface{}, config *Config) error {
 	}
 	if a.Pdf != nil {
 		b := bytes.NewBufferString(a.viewFileTemplate(&tData, a.Pdf.Template))
-		email.AddHtmlToPdfFile(b, a.viewFileTemplate(&tData, a.Pdf.Filename))
+		email.AddHtmlToPdfFile(b, a.Pdf.Filename)
 	}
 	return email.Send()
 }
 
 func (a *ActionEmail) viewTemplate(data *ActionEmailTemplateData, t string) string {
-	tpl, err := template.ParseGlob(t)
+	tpl := template.New("")
+	tpl, err := tpl.Parse(t)
 	if err != nil {
 		log.Printf("fail to parse template (%s)", err.Error())
 		return t
@@ -84,7 +79,8 @@ func (a *ActionEmail) viewTemplate(data *ActionEmailTemplateData, t string) stri
 }
 
 func (a *ActionEmail) viewFileTemplate(data *ActionEmailTemplateData, filename string) string {
-	content, err := ioutil.ReadFile(filename)
+	path := filepath.Dir(*configFilename)
+	content, err := ioutil.ReadFile(path + string(os.PathSeparator) + filename)
 	if err != nil {
 		return err.Error()
 	}
