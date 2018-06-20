@@ -186,7 +186,7 @@ func Html2pdf(buff *bytes.Buffer) (*bytes.Buffer, error) {
 	page := wk.NewPageReader(buff)
 
 	// Set options for this page
-	page.FooterRight.Set("[page]")
+	//page.FooterRight.Set("[page]")
 	page.FooterFontSize.Set(10)
 	page.Zoom.Set(1)
 
