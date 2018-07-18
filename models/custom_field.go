@@ -24,6 +24,9 @@ type CustomFieldData struct {
 }
 
 func (c *CustomFieldData) StringValue() string {
+	if c.Value == nil {
+		return ""
+	}
 	v := reflect.ValueOf(c.Value)
 	switch v.Kind() {
 	case reflect.String:
