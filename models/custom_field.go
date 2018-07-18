@@ -17,6 +17,13 @@ type CustomField struct {
 	Data  *CustomFieldData  `json:"data"`
 }
 
+func (c *CustomField) StringValue() string {
+	if c.Data != nil {
+		return c.Data.StringValue()
+	}
+	return ""
+}
+
 type CustomFieldData struct {
 	FieldId    int64       `json:"field_id"`
 	FieldIdStr string      `json:"field_id_str"`

@@ -52,7 +52,7 @@ func (u *CreatedUser) GetCustomFieldsValues(lang string) []CustomFieldMapLabelVa
 	}
 	m := make([]CustomFieldMapLabelValue, len(u.CustomFields))
 	for i, field := range u.CustomFields {
-		m[i] = CustomFieldMapLabelValue{Label: field.Field.Label(lang), Value: field.Data.StringValue()}
+		m[i] = CustomFieldMapLabelValue{Label: field.Field.Label(lang), Value: field.StringValue()}
 	}
 	return m
 }
