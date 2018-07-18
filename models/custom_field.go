@@ -28,6 +28,9 @@ func (c *CustomFieldData) StringValue() string {
 		return ""
 	}
 	v := reflect.ValueOf(c.Value)
+	if v.IsNil() {
+		return ""
+	}
 	switch v.Kind() {
 	case reflect.String:
 		return v.String()
